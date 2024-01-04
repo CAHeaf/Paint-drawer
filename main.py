@@ -16,7 +16,7 @@ color_positions = [[760, 60], [780, 60], [800, 60], [825, 60], [850, 60], [875, 
 
 
 def get_image():
-    with Image.open('watermelon.png') as img:
+    with Image.open('plant.png') as img:
         img = img.convert('RGB')
         width, height = img.size
         pixels = list(img.getdata())
@@ -74,7 +74,7 @@ def change_colors(pixels):
 def draw(pixels):
     #get mouse pos
     start_x, start_y = pyautogui.position()
-    pyautogui.PAUSE = 0.001
+    pyautogui.PAUSE = 0.01
     current_color = None
     
     # go through and draw each pixel, havent added color yet
@@ -86,6 +86,8 @@ def draw(pixels):
             pixel_color = pixels[i][j]
             closest_color = min(paint_colors, key=lambda x: sum((a - b)**2 for a, b in zip(x, pixel_color)))
             color_position = color_positions[paint_colors.index(closest_color)]
+            if closest_color == (255, 255, 255):
+                continue
             if closest_color != current_color:
                 pyautogui.moveTo(color_position)
                 pyautogui.click()
